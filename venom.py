@@ -139,30 +139,69 @@ def process_attack_ip_port(message):
         logging.error(f"Error in processing attack IP and port: {e}")
 
 @bot.message_handler(func=lambda message: message.text == "Start Attack 🚀")
-def start_attack(message):
-    attack_details = user_attack_details.get(message.from_user.id)
-    if attack_details:
-        target_ip, target_port = attack_details
-        run_attack_command_sync(message.from_user.id, target_ip, target_port, 1)
-        bot.send_message(message.chat.id, f"*Attack started on Host: {target_ip} Port: {target_port}*", parse_mode='Markdown')
-    else:
-        bot.send_message(message.chat.id, "*No target specified. Use /Attack to set it up.*", parse_mode='Markdown')
+✅ Command : /start
 
-@bot.message_handler(func=lambda message: message.text == "Stop Attack")
-def stop_attack(message):
-    attack_details = user_attack_details.get(message.from_user.id)
-    if attack_details:
-        target_ip, target_port = attack_details
-        run_attack_command_sync(message.from_user.id, target_ip, target_port, 2)
-        bot.send_message(message.chat.id, f"*Attack stopped on Host: {target_ip} Port: {target_port}*", parse_mode='Markdown')
-        user_attack_details.pop(message.from_user.id, None)
-    else:
-        bot.send_message(message.chat.id, "*No active attack found to stop.*", parse_mode='Markdown')
+🚀 Bjs : function hello(message) {
+  var greetings = ""
 
-@bot.message_handler(commands=['start'])
-def start_command(message):
-    send_main_buttons(message.chat.id)
+  Bot.sendMessage(greetings + message)
+}
+function doTouchOwnLink() {
+  Bot.sendMessage("")
+}
+function doAttracted(channel) {
+  hello("Referal: " + channel)
+}
 
-if __name__ == "__main__":
-    logging.info("Starting bot...")
-    bot.polling(none_stop=True)
+function doAtractedByUser(refUser) {
+  hello("")
+  var balance = Libs.ResourcesLib.anotherUserRes("balance", refUser.telegramid)
+ balance.add(0.0)
+Bot.sendMessageToChatWithId(refUser.chatId, "🚧 New User on your Invite Link : "+"[" +user.telegramid+"]" + "(" + "tg://user?id=" + user.telegramid + ")"+"");
+}
+
+function doAlreadyAttracted(){
+  Bot.sendMessage("");
+}
+
+var trackOptions = {
+  onTouchOwnLink: doTouchOwnLink,
+  onAttracted: doAttracted,
+  onAtractedByUser: doAtractedByUser,
+  onAlreadyAttracted: doAlreadyAttracted
+}
+
+Libs.ReferralLib.currentUser.track(trackOptions); 
+var welco = User.getProperty("welco")
+if (welco == undefined) {
+  var user_link =
+    "[" + user.first_name + "]" + "(" + "tg://user?id=" + user.telegramid + ")"
+ Bot.sendMessageToChatWithId(5953498281,
+    "*✅ New User\n\n🎉 User = "+user.first_name+"\n\n👀 Username =* " +
+      user_link +
+      " \n\n*🆔 User ID =* " +
+      user.telegramid +
+      ""
+  )
+  var status = Libs.ResourcesLib.anotherChatRes("status", "global")
+  status.add(1)
+}
+User.setProperty("welco", user.telegramid, "text")
+Api.sendChatAction({
+  chat_id: chat.chatid,
+  action: "typing"
+})
+var broadcast = Bot.getProperty("Broadcast") ?
+Bot.getProperty("Broadcast") : []
+if(!broadcast.includes(user.telegramid)){
+broadcast.push(user.telegramid);
+Bot.setProperty("Broadcast", broadcast, "json")
+/*You can check it is adding users to list or not by this way: Bot.sendMessage("*Done :* "+inspect(Bot.getProperty("Broadcast"))+"")*/
+}
+var admin = Bot.getProperty("adminchat")
+var new_user = User.getProperty ("new_user")
+if(!new_user){ 
+Bot.sendMessageToChatWithId(admin, "🚦New User🚦\n\n⚜ User = "+user.first_name+"\n🔰 Username = @"+user.username+"\n🆔 User ID = "+user.telegramid+"\n📛 User Link = ["+user.first_name+"](tg://user?id="+user.telegramid+")")
+User.setProperty ("new_user",true,"boolean")
+}
+Bot.runCommand("PVERIFY")
