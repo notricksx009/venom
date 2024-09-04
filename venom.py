@@ -139,69 +139,62 @@ def process_attack_ip_port(message):
         logging.error(f"Error in processing attack IP and port: {e}")
 
 @bot.message_handler(func=lambda message: message.text == "Start Attack 🚀")
-✅ Command : /start
+def hello(message):
+    greetings = ""
+    Bot.send_message(greetings + message)
 
-🚀 Bjs : function hello(message) {
-  var greetings = ""
+def do_touch_own_link():
+    Bot.send_message("")
 
-  Bot.sendMessage(greetings + message)
-}
-function doTouchOwnLink() {
-  Bot.sendMessage("")
-}
-function doAttracted(channel) {
-  hello("Referal: " + channel)
-}
+def do_attracted(channel):
+    hello("Referal: " + channel)
 
-function doAtractedByUser(refUser) {
-  hello("")
-  var balance = Libs.ResourcesLib.anotherUserRes("balance", refUser.telegramid)
- balance.add(0.0)
-Bot.sendMessageToChatWithId(refUser.chatId, "🚧 New User on your Invite Link : "+"[" +user.telegramid+"]" + "(" + "tg://user?id=" + user.telegramid + ")"+"");
-}
+def do_attracted_by_user(ref_user):
+    hello("")
+    balance = Libs.ResourcesLib.another_user_res("balance", ref_user.telegramid)
+    balance.add(0.0)
+    Bot.send_message_to_chat_with_id(ref_user.chat_id, "🚧 New User on your Invite Link : " + "[" + user.telegramid + "]" + "(" + "tg://user?id=" + user.telegramid + ")" + "")
 
-function doAlreadyAttracted(){
-  Bot.sendMessage("");
-}
+def do_already_attracted():
+    Bot.send_message("")
 
-var trackOptions = {
-  onTouchOwnLink: doTouchOwnLink,
-  onAttracted: doAttracted,
-  onAtractedByUser: doAtractedByUser,
-  onAlreadyAttracted: doAlreadyAttracted
+track_options = {
+    'onTouchOwnLink': do_touch_own_link,
+    'onAttracted': do_attracted,
+    'onAtractedByUser': do_attracted_by_user,
+    'onAlreadyAttracted': do_already_attracted
 }
 
-Libs.ReferralLib.currentUser.track(trackOptions); 
-var welco = User.getProperty("welco")
-if (welco == undefined) {
-  var user_link =
-    "[" + user.first_name + "]" + "(" + "tg://user?id=" + user.telegramid + ")"
- Bot.sendMessageToChatWithId(5953498281,
-    "*✅ New User\n\n🎉 User = "+user.first_name+"\n\n👀 Username =* " +
-      user_link +
-      " \n\n*🆔 User ID =* " +
-      user.telegramid +
-      ""
-  )
-  var status = Libs.ResourcesLib.anotherChatRes("status", "global")
-  status.add(1)
-}
-User.setProperty("welco", user.telegramid, "text")
-Api.sendChatAction({
-  chat_id: chat.chatid,
-  action: "typing"
+Libs.ReferralLib.current_user.track(track_options)
+welco = User.get_property("welco")
+if welco is None:
+    user_link = "[" + user.first_name + "]" + "(" + "tg://user?id=" + user.telegramid + ")"
+    Bot.send_message_to_chat_with_id(5953498281,
+        "*✅ New User\n\n🎉 User = " + user.first_name + "\n\n👀 Username =* " +
+        user_link +
+        " \n\n*🆔 User ID =* " +
+        user.telegramid +
+        ""
+    )
+    status = Libs.ResourcesLib.another_chat_res("status", "global")
+    status.add(1)
+
+User.set_property("welco", user.telegramid, "text")
+Api.send_chat_action({
+    'chat_id': chat.chatid,
+    'action': "typing"
 })
-var broadcast = Bot.getProperty("Broadcast") ?
-Bot.getProperty("Broadcast") : []
-if(!broadcast.includes(user.telegramid)){
-broadcast.push(user.telegramid);
-Bot.setProperty("Broadcast", broadcast, "json")
-/*You can check it is adding users to list or not by this way: Bot.sendMessage("*Done :* "+inspect(Bot.getProperty("Broadcast"))+"")*/
-}
-var admin = Bot.getProperty("adminchat")
-var new_user = User.getProperty ("new_user")
-if(!new_user){ 
-Bot.sendMessageToChatWithId(admin, "🚦New User🚦\n\n⚜ User = "+user.first_name+"\n🔰 Username = @"+user.username+"\n🆔 User ID = "+user.telegramid+"\n📛 User Link = ["+user.first_name+"](tg://user?id="+user.telegramid+")")
-User.setProperty ("new_user",true,"boolean")
-}
-Bot.runCommand("PVERIFY")
+broadcast = Bot.get_property("Broadcast") if Bot.get_property("Broadcast") else []
+if user.telegramid not in broadcast:
+    broadcast.append(user.telegramid)
+    Bot.set_property("Broadcast", broadcast, "json")
+    # You can check it is adding users to list or not by this way: Bot.send_message("*Done :* " + inspect(Bot.get_property("Broadcast")) + "")
+
+admin = Bot.get_property("adminchat")
+new_user = User.get_property("new_user")
+if not new_user:
+    Bot.send_message_to_chat_with_id(admin, "🚦New User🚦\n\n⚜ User = " + user.first_name + "\n🔰 Username = @" + user.username + "\n🆔 User ID = " + user.telegramid + "\n📛 User Link = [" + user.first_name + "](tg://user?id=" + user.telegramid + ")")
+    User.set_property("new_user", True, "boolean")
+
+Bot.run_command("PVERIFY")
+
